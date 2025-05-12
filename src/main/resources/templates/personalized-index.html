@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+        content="Tu Pachanga - Encuentra compañeros para practicar tu deporte favorito en tu ciudad o en cualquier lugar de España. Crea o únete a eventos deportivos.">
+  <meta name="keywords"
+        content="deporte, eventos deportivos, compañeros de deporte, fútbol, baloncesto, tenis, pádel, calistenia">
+  <meta name="author" content="Daniel González">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/personalized-index.css}"/>
+  <title>Tu Pachanga Web</title>
+</head>
+<body>
+
+<!-- Cabecera del index con menuú y titulo -->
+<header>
+
+  <p><a th:href="@{/personalized-index}"><img src="../../../../uploads/logos/logo.png"
+                                              alt="Logo de la web"></a></p>
+  <nav>
+    <ul>
+      <li><a th:href="@{/perfil}">Ver mi perfil</a></li>
+      <li>
+        <!-- Si se deja como enlace, se gerena peticion GET que no funcionaria para .logout() de Spring Security, tiene que ser POST-->
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+          <button type="submit">Cerrar sesión</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+
+</header>
+
+<main>
+
+  <!-- Petición fallida -->
+  <div th:if="${error}" class="flash-message error">
+    <span th:text="${error}"></span>
+    <button onclick="this.parentElement.style.display='none'">×</button>
+  </div>
+
+  <!-- Petición enviada correctamente -->
+  <div th:if="${param.success}" class="flash-message success">
+    <span>Solicitud enviada correctamente</span>
+    <button onclick="this.parentElement.style.display='none'">×</button>
+  </div>
+
+  <!-- Sección principal de la web con el título y descripción de la web -->
+  <h1>Bienvenido <span th:text="${user.firstName}"></span></h1>
+  <p>¿Que deporte te apetece practicar hoy?</p>
+
+  <!-- Sección de eventos disponibles en los municipios de interes del usuario -->
+  <section id="sports-events">
+    <h2>Echa un vistazo a lo que se va a hacer alrededor tuya</h2>
+    <p>¡Elije el evento que mas te guste y reserva tu plaza ya!</p>
+    <div>
+      <div th:each="match : ${matches}" class="event-card">
+        <div class="event-header">
+          <div class="sport-icon">
+            <img th:src="@{'/uploads/avatars/sports/' + ${match.sport.icon}}"
+                 th:alt="${match.sport.alt}"/>
+          </div>
+          <div class="event-meta">
+            <img th:src="@{'/uploads/avatars/users/' + ${match.owner.avatar}}" alt="Avatar de usuario">
+            <p>Creado por: <span th:text="${match.owner.firstName} + ' ' + ${match.owner.lastName}"></span></p>
+          </div>
+          <div class="event-date">
+            <p th:text="${#temporals.format(match.eventDate, 'dd/MM/yyyy HH:mm')}"></p>
+          </div>
+        </div>
+        <hr>
+        <div class="event-body">
+          <p><strong>Nombre del evento:</strong> <span th:text="${match.title}"></span></p>
+          <p><strong>Descripción:</strong> <span th:text="${match.description}"></span></p>
+          <p><strong>Ubicación:</strong> <span
+              th:text="${match.facility.street} + ', ' + ${match.facility.municipality.name}"></span>
+          </p>
+          <p><strong>Nivel:</strong> <span th:text="${match.skillLevel.name()}"></span></p>
+          <p><strong>Plazas disponibles:</strong> <span
+              th:text="${match.availableParticipants}"></span> | <strong>Precio por
+            persona:</strong> <span th:text="${match.pricePerPerson}"></span></p>
+          <button type="button" th:attr="data-event-id=${match.id}" th:onclick="'openModal(' + ${match.id} + ')'" >
+            Contactar
+          </button>
+
+          <!-- Ventana modal para contactar con la persona -->
+          <div th:id="'contactModal-' + ${match.id}" class="modal" style="display:none;">
+            <div class="modal-content">
+              <span class="close" th:onclick="'closeModal(' + ${match.id} + ')'">&times;</span>
+              <h3>Contactar con <span th:text="${match.owner.firstName}"></span></h3>
+              <form th:action="@{/contact-owner}" method="post">
+                <input type="hidden" name="matchId" th:value="${match.id}"/>
+                <textarea name="message" placeholder="Hola, he visto tu evento y ..." required></textarea>
+                <button type="submit">Enviar mensaje</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mapa de google interactivo con eventos -->
+  <section id="interactive-map">
+    <h2>Mira los eventos cercanos a ti</h2>
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50124.376020343036!2d-3.2238658775467517!3d38.26155886616345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1746112304759!5m2!1ses!2ses"
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>
+
+</main>
+
+<!-- Sección de contacto y redes sociales | Pie de página-->
+<footer>
+
+  <div id="copy">
+    <p>&copy; 2023 Tu Pachanga. Todos los derechos reservados.</p>
+    <p>Desarrollado por Daniel González - Desarrollador Web</p>
+    <ul>
+      <li><a href="#">Política de privacidad</a></li>
+      <li><a href="#">Términos y condiciones</a></li>
+    </ul>
+  </div>
+
+  <div id="social-media">
+    <p>Redes sociales:</p>
+    <ul>
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">Twitter</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+  </div>
+
+  <div id="contact">
+    <p>Contacto:</p>
+    <ul>
+      <li>Telefóno: <a href="#">+34 608 708 123</a></li>
+      <li>Email: <a href="#">dani.desarrolloweb@gmail.com</a></li>
+    </ul>
+  </div>
+
+</footer>
+</body>
+
+<script>
+  function openModal(matchId) {
+    document.getElementById("contactModal-" + matchId).style.display = "block";
+  }
+
+  function closeModal(matchId) {
+    document.getElementById("contactModal-" + matchId).style.display = "none";
+  }
+
+  window.onclick = function (event) {
+    document.querySelectorAll(".modal").forEach(function(modal) {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  };
+</script>
+
+
+</html>

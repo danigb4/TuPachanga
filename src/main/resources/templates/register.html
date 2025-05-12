@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+        content="Regístrate en Tu Pachanga para crear eventos deportivos y conectar con otros usuarios.">
+  <meta name="keywords" content="registro, registrarse, Tu Pachanga, deportes, eventos deportivos">
+  <meta name="author" content="Daniel González">
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/css/register.css}"/>
+  <title>Registro - Tu Pachanga</title>
+</head>
+<body>
+
+<header>
+
+  <p><a th:href="@{/}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
+  <nav>
+    <ul>
+      <li><a th:href="@{/login}">Iniciar sesión</a></li>
+      <li><a th:href="@{/register}">Registrarse</a></li>
+    </ul>
+  </nav>
+
+</header>
+
+<div class="register-container">
+  <h1>Regístrate</h1>
+  <form action="#" th:action="@{/register}" th:object="${newUserDto}" method="POST"
+        enctype="multipart/form-data">
+    <div class="form-group">
+      <input type="text" th:field="*{firstName}" placeholder="Nombre" required/>
+    </div>
+    <div class="form-group">
+      <input type="text" th:field="*{lastName}" placeholder="Apellido" required/>
+    </div>
+    <div class="form-group">
+      <input type="email" th:field="*{email}" placeholder="Correo electrónico" required/>
+    </div>
+    <div class="form-group">
+      <input type="text" th:field="*{telephone}" placeholder="Teléfono"/>
+    </div>
+    <div class="form-group">
+      <input type="password" th:field="*{password}" placeholder="Contraseña" required/>
+    </div>
+    <div class="form-group">
+      <textarea th:field="*{description}" placeholder="Sobre ti..."></textarea>
+    </div>
+    <div class="form-group">
+      <input type="file" name="avatarFile" accept="image/*"/>
+    </div>
+
+    <div class="form-group">
+      <label for="provinceSelect">Provincia:</label>
+      <select id="provinceSelect" class="form-control" onchange="loadMunicipios()">
+        <option value="" disabled selected>Selecciona una provincia</option>
+        <option th:each="p : ${provinces}"
+                th:value="${p.id}"
+                th:text="${p.name}"></option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="municipalitySelect">Municipios:</label>
+      <select id="municipalitySelect" th:field="*{municipalities}" class="form-control" multiple disabled>
+        <option value="" disabled selected>Primero selecciona una provincia</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn">Registrarse</button>
+    <p class="login-link">¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión aquí</a></p>
+  </form>
+</div>
+
+<script>
+
+  function loadMunicipios() {
+
+    var provinceSelect = document.getElementById('provinceSelect');
+    var provinceId = provinceSelect.value;
+    var municipalitySelect = document.getElementById('municipalitySelect');
+
+    if (provinceId) {
+      fetch('/municipalities/by-province?provinceId=' + provinceId)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al cargar municipios');
+        }
+        return response.json();
+      })
+      .then(municipios => {
+        // Limpiar select
+        municipalitySelect.innerHTML = '';
+
+        // Añadir opción por defecto
+        var defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.disabled = true;
+        defaultOption.textContent = 'Selecciona uno o varios municipios';
+        municipalitySelect.appendChild(defaultOption);
+
+        // Añadir municipios
+        municipios.forEach(function (municipio) {
+          var option = document.createElement('option');
+          option.value = municipio.id;
+          option.textContent = municipio.name;
+          municipalitySelect.appendChild(option);
+        });
+
+        // Habilitar select
+        municipalitySelect.disabled = false;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        municipalitySelect.innerHTML = '<option value="" disabled selected>Error al cargar municipios</option>';
+      });
+    } else {
+      municipalitySelect.innerHTML = '<option value="" disabled selected>Selecciona una provincia primero</option>';
+      municipalitySelect.disabled = true;
+    }
+  }
+</script>
+
+</body>
+</html>

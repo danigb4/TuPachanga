@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: postgres_tupachanga_app
+    environment:
+      POSTGRES_DB: tupachanga
+      POSTGRES_USER: oretania
+      POSTGRES_PASSWORD: oretania
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./sql/01_schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+      - ./sql/02_data.sql:/docker-entrypoint-initdb.d/02_data.sql:ro
+    restart: always
