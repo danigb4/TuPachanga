@@ -3,131 +3,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Tu Pachanga - Encuentra compañeros para practicar tu deporte favorito en tu ciudad o en cualquier lugar de España. Crea o únete a eventos deportivos.">
-  <meta name="keywords" content="deporte, eventos deportivos, compañeros de deporte, fútbol, baloncesto, tenis, pádel, calistenia">
+  <meta name="description"
+        content="Tu Pachanga - Encuentra compañeros para practicar tu deporte favorito en tu ciudad o en cualquier lugar de España. Crea o únete a eventos deportivos.">
+  <meta name="keywords"
+        content="deporte, eventos deportivos, compañeros de deporte, fútbol, baloncesto, tenis, pádel, calistenia">
   <meta name="author" content="Daniel González">
   <meta name="robots" content="index, follow">
   <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
-  <link rel="stylesheet" th:href="@{/css/index.css}" />
-  <link rel="stylesheet" th:href="@{/css/generalStyle.css}" />
+  <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/generalStyle.css}"/>
   <title>Tu Pachanga Web</title>
 </head>
 <body>
 
-  <!-- Cabecera del index con menú y titulo -->
-  <header>
+<!-- Cabecera del index con menú y titulo -->
+<header>
 
-    <p><a th:href="@{/}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
-    <nav>
-      <ul>
-        <li><a th:href="@{/auth/login}">Iniciar sesión</a></li>
-        <li><a th:href="@{/auth/register}">Registrarse</a></li>
-      </ul>
-    </nav>
-  </header>
+  <p><a th:href="@{/}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
+  <nav>
+    <ul>
+      <li><a th:href="@{/auth/login}">Iniciar sesión</a></li>
+      <li><a th:href="@{/auth/register}">Registrarse</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <main>
+<main>
 
-    <!-- Título y descripción de la web -->
-    <h1>Bienvenido a Tu Pachanga</h1>
-    <p>¿Quieres hacer deporte pero no te gusta hacerlo solo? ¿Quieres practicar el deporte que más te gusta pero no sabes donde? 
-      Te presentamos Tu Pachanga, una web donde podrás encontrar compañeros para practicar tu deporte favorito.
-      Aquí podrás encontrar compañeros para practicar el deporte que más te gusta, ya sea en tu ciudad o en cualquier lugar de España.
-      Podrás crear eventos para buscar compañeros o buscar eventos creados por otros usuarios.
-      Además, podrás ver los eventos que se celebran en tu ciudad y apuntarte a ellos.
-      Con Tu Pachanga podrás hacer deporte de una forma divertida y social.
-      No te quedes sin practicar tu deporte favorito, ¡únete a nosotros y encuentra a tus compañeros de deporte!</p>
-    </p>
+  <!-- Título y descripción de la web -->
+  <h1>Bienvenido a Tu Pachanga</h1>
+  <p>¿Quieres hacer deporte pero no te gusta hacerlo solo? ¿Quieres practicar el deporte que más te
+    gusta pero no sabes donde?
+    Te presentamos Tu Pachanga, una web donde podrás encontrar compañeros para practicar tu deporte
+    favorito.
+    Aquí podrás encontrar compañeros para practicar el deporte que más te gusta, ya sea en tu ciudad
+    o en cualquier lugar de España.
+    Podrás crear eventos para buscar compañeros o buscar eventos creados por otros usuarios.
+    Además, podrás ver los eventos que se celebran en tu ciudad y apuntarte a ellos.
+    Con Tu Pachanga podrás hacer deporte de una forma divertida y social.
+    No te quedes sin practicar tu deporte favorito, ¡únete a nosotros y encuentra a tus compañeros
+    de deporte!</p>
+  </p>
 
-    <!-- Eventos disponibles -->
-    <section id="sports-events">
-      <h2>Eventos actuales</h2>
-      <p>No te quedes ahí parado, ¡únete a alguno de ellos, te están esperando!</p>
-      <div>
-        <div th:each="match : ${matches}" class="event-card">
-          <div class="event-header">
-            <div class="sport-icon">
-              <img th:src="@{'/uploads/avatars/sports/' + ${match.sport.icon}}" th:alt="${match.sport.alt}" />
-            </div>
-            <div class="event-meta">
-              <img th:src="@{'/uploads/avatars/users/' + ${match.owner.avatar}}" alt="Avatar de usuario" />
-              <p>Creado por: <span th:text="${match.owner.firstName} + ' ' + ${match.owner.lastName}"></span></p>
-            </div>
-            <div class="event-date">
-              <p th:text="${#temporals.format(match.eventDate, 'dd/MM/yyyy HH:mm')}"></p>
-            </div>
+  <!-- Eventos disponibles -->
+  <section id="sports-events">
+    <h2>Eventos actuales</h2>
+    <p>No te quedes ahí parado, ¡únete a alguno de ellos, te están esperando!</p>
+    <div>
+      <div th:each="match : ${matches}" class="event-card">
+        <div class="event-header">
+          <div class="sport-icon">
+            <img th:src="@{'/uploads/avatars/sports/' + ${match.sport.icon}}"
+                 th:alt="${match.sport.alt}"/>
           </div>
-          <hr>
-          <div class="event-body">
-            <p><strong>Nombre del evento:</strong> <span th:text="${match.title}"></span></p>
-            <p><strong>Descripción:</strong> <span th:text="${match.description}"></span></p>
-            <p><strong>Ubicación:</strong> <span th:text="${match.facility.street} + ', ' + ${match.facility.municipality.name}"></span></p>
-            <p><strong>Nivel:</strong> <span th:text="${match.skillLevel.name()}"></span></p>
-            <p><strong>Plazas disponibles:</strong> <span th:text="${match.availableParticipants}"></span> | <strong>Precio por persona:</strong> <span th:text="${match.pricePerPerson} + '€'"></span></p>
+          <div class="event-meta">
+            <img th:src="@{'/uploads/avatars/users/' + ${match.owner.avatar}}"
+                 alt="Avatar de usuario"/>
+            <p>Creado por: <a th:href="@{/user/{uuid}(uuid = ${match.owner.uuid})}"><span
+                th:text="${match.owner.firstName} + ' ' + ${match.owner.lastName}"></span></a></p>
+          </div>
+          <div class="event-date">
+            <p th:text="${#temporals.format(match.eventDate, 'dd/MM/yyyy HH:mm')}"></p>
+          </div>
+        </div>
+        <hr>
+        <div class="event-body">
+          <p><strong>Nombre del evento:</strong> <span th:text="${match.title}"></span></p>
+          <p><strong>Descripción:</strong> <span th:text="${match.description}"></span></p>
+          <p><strong>Ubicación:</strong> <span
+              th:text="${match.facility.street} + ', ' + ${match.facility.municipality.name}"></span>
+          </p>
+          <p><strong>Nivel:</strong> <span th:text="${match.skillLevel.name()}"></span></p>
+          <p><strong>Plazas disponibles:</strong> <span
+              th:text="${match.availableParticipants}"></span> | <strong>Precio por
+            persona:</strong> <span th:text="${match.pricePerPerson} + '€'"></span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mapa de google interactivo con eventos -->
+  <section id="interactive-map">
+    <h2>Mira los eventos cercanos a ti</h2>
+    <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50124.376020343036!2d-3.2238658775467517!3d38.26155886616345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1746112304759!5m2!1ses!2ses"
+        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </section>
+
+  <!-- Deportes disponibles -->
+  <section id="available-sports">
+    <div class="container">
+      <h2>Sección de deportes disponibles</h2>
+      <p>¿No sabes qué deporte practicar? Aquí tienes una lista de deportes que puedes practicar con
+        nosotros.</p>
+
+      <div class="sports-wrapper">
+        <div th:each="sport : ${sports}" class="sport-card">
+          <div class="sport-icon">
+            <img th:src="@{'/uploads/avatars/sports/' + ${sport.icon}}" th:alt="${sport.alt}"/>
+          </div>
+          <div class="sport-name">
+            <span th:text="${sport.name}"></span>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Mapa de google interactivo con eventos -->
-    <section id="interactive-map">
-      <h2>Mira los eventos cercanos a ti</h2>
-      <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50124.376020343036!2d-3.2238658775467517!3d38.26155886616345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1746112304759!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </section>
+      <p>Si no encuentras el deporte que quieres practicar, no dudes en ponerte en contacto con
+        nosotros y lo añadiremos a la lista.</p>
+    </div>
+  </section>
 
-    <!-- Deportes disponibles -->
-    <section id="available-sports">
-      <div class="container">
-        <h2>Sección de deportes disponibles</h2>
-        <p>¿No sabes qué deporte practicar? Aquí tienes una lista de deportes que puedes practicar con nosotros.</p>
 
-        <div class="sports-wrapper">
-          <div th:each="sport : ${sports}" class="sport-card">
-            <div class="sport-icon">
-              <img th:src="@{'/uploads/avatars/sports/' + ${sport.icon}}" th:alt="${sport.alt}" />
-            </div>
-            <div class="sport-name">
-              <span th:text="${sport.name}"></span>
-            </div>
-          </div>
-        </div>
-    
-        <p>Si no encuentras el deporte que quieres practicar, no dudes en ponerte en contacto con nosotros y lo añadiremos a la lista.</p>
-      </div>
-    </section>
-    
+</main>
 
-  </main>
+<!-- Contacto y redes sociales | Pie de página-->
+<footer>
 
-  <!-- Contacto y redes sociales | Pie de página-->
-  <footer>
-
-    <div id="copy">
+  <div id="copy">
     <p>&copy; 2023 Tu Pachanga. Todos los derechos reservados.</p>
     <p>Desarrollado por Daniel González - Desarrollador Web</p>
     <ul>
       <li><a href="#">Política de privacidad</a></li>
       <li><a href="#">Términos y condiciones</a></li>
     </ul>
-    </div>
+  </div>
 
-    <div id="social-media">
+  <div id="social-media">
     <p>Redes sociales:</p>
     <ul>
       <li><a href="#">Facebook</a></li>
       <li><a href="#">Twitter</a></li>
       <li><a href="#">Instagram</a></li>
-    </ul>  
-    </div>
+    </ul>
+  </div>
 
-    <div id="contact">
+  <div id="contact">
     <p>Contacto:</p>
     <ul>
       <li>Telefóno: <a href="#">+34 608 708 123</a></li>
       <li>Email: <a href="#">dani.desarrolloweb@gmail.com</a></li>
-    </ul> 
-    </div>
+    </ul>
+  </div>
 
-  </footer>
+</footer>
 </body>
 </html>

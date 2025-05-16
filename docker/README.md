@@ -74,14 +74,10 @@ docker-compose --version
 
 2. **Si te aparece, conéctate a él**
 
-    ```bash
-    docker exec -it postgres_tupachanga_app bash
+   ```bash
+   docker exec -it postgres_tupachanga_app psql -U oretania -d tupachanga
     ```
-3. **Conéctate a la base de datos**
-
-    ```bash
-    psql -U oretania -d tupachanga
-    ```
+   
 4. **Muestra las tablas y haz un select para recuperar datos de prueba**
 
     ```bash

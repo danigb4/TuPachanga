@@ -6,6 +6,7 @@ import org.tupachanga.tupachanga.entities.User;
 import org.tupachanga.tupachanga.repositories.UserRepository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 
 @Service
@@ -22,4 +23,7 @@ public class UsersService {
     return userRepository.findByEmail(email);
   }
 
+  public Optional<User> getByUuid(UUID uuid) {
+    return userRepository.findByUuid(uuid);
+  }
 }

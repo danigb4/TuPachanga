@@ -10,9 +10,9 @@
   <meta name="author" content="Daniel González">
   <meta name="robots" content="index, follow">
   <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
-  <link rel="stylesheet" th:href="@{/css/generalStyle.css}" />
+  <link rel="stylesheet" th:href="@{/css/generalStyle.css}"/>
   <link rel="stylesheet" th:href="@{/css/personalized-index.css}"/>
-  <link rel="stylesheet" th:href="@{/css/index.css}" />
+  <link rel="stylesheet" th:href="@{/css/index.css}"/>
   <title>Tu Pachanga Web</title>
 </head>
 <body>
@@ -20,7 +20,8 @@
 <!-- Cabecera del index con menú y titulo -->
 <header>
 
-  <p><a th:href="@{/user/personalized-index}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
+  <p><a th:href="@{/user/personalized-index}"><img src="../../../../uploads/logos/logo.png"
+                                                   alt="Logo de la web"></a></p>
   <nav>
     <ul>
       <li><a th:href="@{/user/profile}">Ver mi perfil</a></li>
@@ -65,8 +66,11 @@
                  th:alt="${match.sport.alt}"/>
           </div>
           <div class="event-meta">
-            <img th:src="@{'/uploads/avatars/users/' + ${match.owner.avatar}}" alt="Avatar de usuario">
-            <p>Creado por: <span th:text="${match.owner.firstName} + ' ' + ${match.owner.lastName}"></span></p>
+            <img th:src="@{'/uploads/avatars/users/' + ${match.owner.avatar}}"
+                 alt="Avatar de usuario">
+            <p>Creado por: <a th:href="@{/user/{uuid}(uuid = ${match.owner.uuid})}">
+              <span th:text="${match.owner.firstName} + ' ' + ${match.owner.lastName}"></span></a>
+            </p>
           </div>
           <div class="event-date">
             <p th:text="${#temporals.format(match.eventDate, 'dd/MM/yyyy HH:mm')}"></p>
@@ -83,7 +87,8 @@
           <p><strong>Plazas disponibles:</strong> <span
               th:text="${match.availableParticipants}"></span> | <strong>Precio por
             persona:</strong> <span th:text="${match.pricePerPerson}"></span></p>
-          <button type="button" th:attr="data-event-id=${match.id}" th:onclick="'openModal(' + ${match.id} + ')'" >
+          <button type="button" th:attr="data-event-id=${match.id}"
+                  th:onclick="'openModal(' + ${match.id} + ')'">
             Contactar
           </button>
 
@@ -94,7 +99,8 @@
               <h3>Contactar con <span th:text="${match.owner.firstName}"></span></h3>
               <form th:action="@{/user/contact-owner}" method="post">
                 <input type="hidden" name="matchId" th:value="${match.id}"/>
-                <textarea name="message" placeholder="Hola, he visto tu evento y ..." required></textarea>
+                <textarea name="message" placeholder="Hola, he visto tu evento y ..."
+                          required></textarea>
                 <button type="submit">Enviar mensaje</button>
               </form>
             </div>
@@ -157,7 +163,7 @@
   }
 
   window.onclick = function (event) {
-    document.querySelectorAll(".modal").forEach(function(modal) {
+    document.querySelectorAll(".modal").forEach(function (modal) {
       if (event.target === modal) {
         modal.style.display = "none";
       }

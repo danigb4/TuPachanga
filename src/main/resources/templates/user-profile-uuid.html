@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+        content="Tu Pachanga - Encuentra compañeros para practicar tu deporte favorito en tu ciudad o en cualquier lugar de España. Crea o únete a eventos deportivos.">
+  <meta name="keywords"
+        content="deporte, eventos deportivos, compañeros de deporte, fútbol, baloncesto, tenis, pádel, calistenia">
+  <meta name="author" content="Daniel González">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/css/generalStyle.css}"/>
+  <link rel="stylesheet" th:href="@{/css/user-profile.css}"/>
+  <title>Tu Pachanga Web</title>
+</head>
+<body>
+
+<!-- Cabecera del index con menú y titulo -->
+<header>
+
+  <p><a th:href="@{/user/personalized-index}"><img src="../../../../uploads/logos/logo.png"
+                                                   alt="Logo de la web"></a></p>
+  <nav>
+    <ul>
+      <li><a th:href="@{/user/profile}">Ver mi perfil</a></li>
+      <li>
+        <!-- Si se deja como enlace, se gerena peticion GET que no funcionaria para .logout() de Spring Security, tiene que ser POST-->
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+          <button type="submit">Cerrar sesión</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+
+</header>
+
+<main>
+
+  <!-- Imagen de perfil y datos del usuario -->
+  <div class="user-container">
+    <div class="user-avatar">
+      <img th:src="@{'/uploads/avatars/users/' + ${user.avatar}}" alt="Avatar de usuario"/>
+    </div>
+    <div class="user-data">
+      <h2 th:text="${user.firstName} + ' ' + ${user.lastName}"></h2>
+      <p th:text="${user.email}"></p>
+      <p th:text="'Miembro desde: ' + ${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></p>
+    </div>
+  </div>
+
+  <!-- Descripción -->
+  <section>
+    <h3>Descripción</h3>
+    <p th:text="${user.description}"></p>
+  </section>
+
+  <!-- Municipios del usuario -->
+  <section>
+    <h3>Municipios donde quieres ver anuncios:</h3>
+    <div class="municipalities-wrapper">
+      <div th:each="municipality : ${user.municipalities}">
+        <div class="municipality-icon">
+          <img src="/uploads/logos/municipality-logo.png" alt="Municipio icono"/>
+        </div>
+        <div class="municipality-name">
+          <span th:text="${municipality.name}"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Deportes que le gustan -->
+  <section>
+    <h3>Selección de deportes que te gustan</h3>
+    <div class="sports-wrapper">
+      <div th:each="sport : ${user.sports}" class="sport-card">
+        <div class="sport-icon">
+          <img th:src="@{'/uploads/avatars/sports/' + ${sport.icon}}" th:alt="${sport.alt}"/>
+        </div>
+        <div class="sport-name">
+          <span th:text="${sport.name}"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Sección de contacto y redes sociales | Pie de página-->
+<footer>
+
+  <div id="copy">
+    <p>&copy; 2023 Tu Pachanga. Todos los derechos reservados.</p>
+    <p>Desarrollado por Daniel González - Desarrollador Web</p>
+    <ul>
+      <li><a href="#">Política de privacidad</a></li>
+      <li><a href="#">Términos y condiciones</a></li>
+    </ul>
+  </div>
+
+  <div id="social-media">
+    <p>Redes sociales:</p>
+    <ul>
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">Twitter</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+  </div>
+
+  <div id="contact">
+    <p>Contacto:</p>
+    <ul>
+      <li>Telefóno: <a href="#">+34 608 708 123</a></li>
+      <li>Email: <a href="#">dani.desarrolloweb@gmail.com</a></li>
+    </ul>
+  </div>
+
+</footer>
+
+</body>
+</html>

@@ -26,6 +26,7 @@ import org.tupachanga.tupachanga.entities.enums.SkillLevel;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -38,6 +39,9 @@ public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Column(unique = true, updatable = false, insertable = false)
+  private UUID uuid;
 
   @Column(name = "first_name")
   private String firstName;

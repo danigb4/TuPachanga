@@ -1,3 +1,6 @@
+-- Generar Random UUID para Users
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+
 -- Tabla de provincias
 CREATE TABLE provinces (
                            id SERIAL PRIMARY KEY,
@@ -17,6 +20,7 @@ CREATE TABLE municipalities (
 -- Tabla: usuarios
 CREATE TABLE users (
                        id SERIAL PRIMARY KEY,
+                       uuid UUID NOT NULL DEFAULT gen_random_uuid(),
                        first_name VARCHAR(100),
                        last_name VARCHAR(100),
                        email VARCHAR(150) UNIQUE NOT NULL,
