@@ -85,6 +85,14 @@ public class User {
   )
   private Set<Match> matchesJoined = new HashSet<>();
 
+  @ManyToMany
+  @JoinTable(
+      name = "user_sports",
+      joinColumns = @JoinColumn(name = "user_id"),
+      inverseJoinColumns = @JoinColumn(name = "sport_id")
+  )
+  private Set<Sport> sports = new HashSet<>();
+
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();

@@ -101,3 +101,10 @@ CREATE TABLE match_participants (
                                     user_id INT REFERENCES users(id) ON DELETE CASCADE,
                                     PRIMARY KEY (match_id, user_id)
 );
+
+-- Tabla: seleccion deportes de un usuario
+CREATE TABLE user_sports (
+                                    sport_id INT REFERENCES sports(id) ON DELETE CASCADE,
+                                    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+                                    PRIMARY KEY (sport_id, user_id)
+);

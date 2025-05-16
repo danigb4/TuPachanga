@@ -9,25 +9,26 @@
   <meta name="robots" content="index, follow">
   <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
   <link rel="stylesheet" th:href="@{/css/index.css}" />
+  <link rel="stylesheet" th:href="@{/css/generalStyle.css}" />
   <title>Tu Pachanga Web</title>
 </head>
 <body>
 
-  <!-- Cabecera del index con menuú y titulo -->
+  <!-- Cabecera del index con menú y titulo -->
   <header>
 
     <p><a th:href="@{/}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
     <nav>
       <ul>
-        <li><a th:href="@{/login}">Iniciar sesión</a></li>
-        <li><a th:href="@{/register}">Registrarse</a></li>
+        <li><a th:href="@{/auth/login}">Iniciar sesión</a></li>
+        <li><a th:href="@{/auth/register}">Registrarse</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
 
-    <!-- Sección principal de la web con el título y descripción de la web -->
+    <!-- Título y descripción de la web -->
     <h1>Bienvenido a Tu Pachanga</h1>
     <p>¿Quieres hacer deporte pero no te gusta hacerlo solo? ¿Quieres practicar el deporte que más te gusta pero no sabes donde? 
       Te presentamos Tu Pachanga, una web donde podrás encontrar compañeros para practicar tu deporte favorito.
@@ -38,7 +39,7 @@
       No te quedes sin practicar tu deporte favorito, ¡únete a nosotros y encuentra a tus compañeros de deporte!</p>
     </p>
 
-    <!-- Sección de eventos disponibles -->
+    <!-- Eventos disponibles -->
     <section id="sports-events">
       <h2>Eventos actuales</h2>
       <p>No te quedes ahí parado, ¡únete a alguno de ellos, te están esperando!</p>
@@ -74,7 +75,7 @@
       <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50124.376020343036!2d-3.2238658775467517!3d38.26155886616345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1746112304759!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </section>
 
-    <!-- Sección de deportes disponibles -->
+    <!-- Deportes disponibles -->
     <section id="available-sports">
       <div class="container">
         <h2>Sección de deportes disponibles</h2>
@@ -98,7 +99,7 @@
 
   </main>
 
-  <!-- Sección de contacto y redes sociales | Pie de página-->
+  <!-- Contacto y redes sociales | Pie de página-->
   <footer>
 
     <div id="copy">

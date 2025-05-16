@@ -12,7 +12,6 @@ public interface MunicipalityRepository extends JpaRepository<Municipality, Long
 
   List<Municipality> findAll();
 
-  @Query("SELECT m FROM Municipality m WHERE m.province.id = :provinceId")
+  @Query("select m from Municipality m where m.province.id = :provinceId")
   List<Municipality> findByProvince(Long provinceId);
-
 }

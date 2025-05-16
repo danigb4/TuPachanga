@@ -24,4 +24,6 @@ public class NewUserDto {
   private String description;
 
   private List<Long> municipalities;
+
+  private List<Long> sports;
 }

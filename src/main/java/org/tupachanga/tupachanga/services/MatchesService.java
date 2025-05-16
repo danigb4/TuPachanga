@@ -18,8 +18,8 @@ public class MatchesService {
     return matchesRepository.findActiveMacthes();
   }
 
-  public List<Match> getMatchesByUserMunicipalities(Long id) {
-    return matchesRepository.findMatchesByUserMunicipalities(id);
+  public List<Match> getMatchesByUserMunicipalitiesAndSports(Long id) {
+    return matchesRepository.findMatchesByUserMunicipalitiesAndSports(id);
   }
 
   public Optional<Match> getById(Long id) {

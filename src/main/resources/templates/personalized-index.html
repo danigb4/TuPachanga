@@ -10,20 +10,20 @@
   <meta name="author" content="Daniel González">
   <meta name="robots" content="index, follow">
   <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
-  <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/generalStyle.css}" />
   <link rel="stylesheet" th:href="@{/css/personalized-index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/index.css}" />
   <title>Tu Pachanga Web</title>
 </head>
 <body>
 
-<!-- Cabecera del index con menuú y titulo -->
+<!-- Cabecera del index con menú y titulo -->
 <header>
 
-  <p><a th:href="@{/personalized-index}"><img src="../../../../uploads/logos/logo.png"
-                                              alt="Logo de la web"></a></p>
+  <p><a th:href="@{/user/personalized-index}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
   <nav>
     <ul>
-      <li><a th:href="@{/perfil}">Ver mi perfil</a></li>
+      <li><a th:href="@{/user/profile}">Ver mi perfil</a></li>
       <li>
         <!-- Si se deja como enlace, se gerena peticion GET que no funcionaria para .logout() de Spring Security, tiene que ser POST-->
         <form th:action="@{/logout}" method="post" style="display:inline;">
@@ -49,11 +49,11 @@
     <button onclick="this.parentElement.style.display='none'">×</button>
   </div>
 
-  <!-- Sección principal de la web con el título y descripción de la web -->
+  <!-- Título y descripción de la web -->
   <h1>Bienvenido <span th:text="${user.firstName}"></span></h1>
   <p>¿Que deporte te apetece practicar hoy?</p>
 
-  <!-- Sección de eventos disponibles en los municipios de interes del usuario -->
+  <!-- Eventos disponibles en los municipios de interes del usuario -->
   <section id="sports-events">
     <h2>Echa un vistazo a lo que se va a hacer alrededor tuya</h2>
     <p>¡Elije el evento que mas te guste y reserva tu plaza ya!</p>
@@ -92,7 +92,7 @@
             <div class="modal-content">
               <span class="close" th:onclick="'closeModal(' + ${match.id} + ')'">&times;</span>
               <h3>Contactar con <span th:text="${match.owner.firstName}"></span></h3>
-              <form th:action="@{/contact-owner}" method="post">
+              <form th:action="@{/user/contact-owner}" method="post">
                 <input type="hidden" name="matchId" th:value="${match.id}"/>
                 <textarea name="message" placeholder="Hola, he visto tu evento y ..." required></textarea>
                 <button type="submit">Enviar mensaje</button>
@@ -115,7 +115,7 @@
 
 </main>
 
-<!-- Sección de contacto y redes sociales | Pie de página-->
+<!-- Contacto y redes sociales | Pie de página-->
 <footer>
 
   <div id="copy">
@@ -164,6 +164,5 @@
     });
   };
 </script>
-
 
 </html>

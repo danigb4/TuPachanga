@@ -18,8 +18,8 @@
     <p><a th:href="@{/}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
     <nav>
       <ul>
-        <li><a th:href="@{/login}">Iniciar sesión</a></li>
-        <li><a th:href="@{/register}">Registrarse</a></li>
+        <li><a th:href="@{/auth/login}">Iniciar sesión</a></li>
+        <li><a th:href="@{/auth/register}">Registrarse</a></li>
       </ul>
     </nav>
     
@@ -28,7 +28,7 @@
   <div class="login-container">
     <h1>Iniciar Sesión</h1>
 
-    <form th:action="@{/login}" method="POST">
+    <form th:action="@{/auth/login}" method="POST">
 
       <div class="form-group">
         <label for="username">Correo Electrónico</label>

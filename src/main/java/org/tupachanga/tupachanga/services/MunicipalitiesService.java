@@ -14,6 +14,10 @@ public class MunicipalitiesService {
 
   private final MunicipalityRepository municipalityRepository;
 
+  public List<Municipality> getAll() {
+    return municipalityRepository.findAll();
+  }
+
   public List<Municipality> getByProvince(Long provinceId) {
     return municipalityRepository.findByProvince(provinceId);
   }

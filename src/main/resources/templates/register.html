@@ -19,8 +19,8 @@
   <p><a th:href="@{/}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
   <nav>
     <ul>
-      <li><a th:href="@{/login}">Iniciar sesión</a></li>
-      <li><a th:href="@{/register}">Registrarse</a></li>
+      <li><a th:href="@{/auth/login}">Iniciar sesión</a></li>
+      <li><a th:href="@{/auth/register}">Registrarse</a></li>
     </ul>
   </nav>
 
@@ -28,7 +28,7 @@
 
 <div class="register-container">
   <h1>Regístrate</h1>
-  <form action="#" th:action="@{/register}" th:object="${newUserDto}" method="POST"
+  <form action="#" th:action="@{/auth/register}" th:object="${newUserDto}" method="POST"
         enctype="multipart/form-data">
     <div class="form-group">
       <input type="text" th:field="*{firstName}" placeholder="Nombre" required/>
@@ -69,8 +69,18 @@
       </select>
     </div>
 
+    <div class="form-group">
+      <label for="sportSelect">Deportes:</label>
+      <select id="sportSelect" name="sports" class="form-control" multiple>
+        <option value="" disabled selected>Selecciona uno o varias deportes</option>
+        <option th:each="sport : ${sports}"
+                th:value="${sport.id}"
+                th:text="${sport.name}"></option>
+      </select>
+    </div>
+
     <button type="submit" class="btn">Registrarse</button>
-    <p class="login-link">¿Ya tienes cuenta? <a th:href="@{/login}">Inicia sesión aquí</a></p>
+    <p class="login-link">¿Ya tienes cuenta? <a th:href="@{/auth/login}">Inicia sesión aquí</a></p>
   </form>
 </div>
 
@@ -83,7 +93,7 @@
     var municipalitySelect = document.getElementById('municipalitySelect');
 
     if (provinceId) {
-      fetch('/municipalities/by-province?provinceId=' + provinceId)
+      fetch('/auth/municipalities/by-province?provinceId=' + provinceId)
       .then(response => {
         if (!response.ok) {
           throw new Error('Error al cargar municipios');
@@ -113,7 +123,6 @@
         municipalitySelect.disabled = false;
       })
       .catch(error => {
-        console.error('Error:', error);
         municipalitySelect.innerHTML = '<option value="" disabled selected>Error al cargar municipios</option>';
       });
     } else {

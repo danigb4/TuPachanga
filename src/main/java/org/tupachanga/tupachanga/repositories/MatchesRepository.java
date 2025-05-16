@@ -17,6 +17,7 @@ public interface MatchesRepository extends JpaRepository<Match, Long> {
   @Query(value = "select m from Match m join m.facility f "
                                      + "join f.municipality mu "
                                      + "join mu.users u "
-                                     + "where u.id = :userId  and m.owner.id != :userId")
-  List<Match> findMatchesByUserMunicipalities(@Param("userId") Long userId);
+                                     + "join u.sports us "
+                                     + "where u.id = :userId  and m.owner.id != :userId and m.sport.id = us.id")
+  List<Match> findMatchesByUserMunicipalitiesAndSports(@Param("userId") Long userId);
 }

@@ -24,21 +24,19 @@ public class SpringSecurityConfig {
         .authorizeHttpRequests(authz -> authz
             .requestMatchers(
                 "/",                           // Página principal (index)
-                "/login",                      // Página de login personalizada
-                "/register",                   // Registro
+                "/auth/**",
                 "/css/**",                     // Recursos estaticos
-                "/uploads/**",                 // Archivos subidos
-                "/municipalities/by-province"  // Endpoint de municipios
+                "/uploads/**"                  // Archivos subidos
             ).permitAll()
             .anyRequest().authenticated()
         )
         .formLogin(form -> form
-            .loginPage("/login")
-            .loginProcessingUrl("/login")
+            .loginPage("/auth/login")
+            .loginProcessingUrl("/auth/login")
             .usernameParameter("username")
             .passwordParameter("password")
-            .defaultSuccessUrl("/personalized-index", true)
-            .failureUrl("/login?error=true")
+            .defaultSuccessUrl("/user/personalized-index", true)
+            .failureUrl("/auth/login?error=true")
             .permitAll()
         )
         .logout(logout -> logout

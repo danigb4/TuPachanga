@@ -16,4 +16,8 @@ public class SportsService {
   public List<Sport> getAll() {
     return sportRepository.findAll();
   }
+
+  public List<Sport> getSportsByIds(List<Long> sportIds) {
+    return sportRepository.findAllById(sportIds);
+  }
 }
