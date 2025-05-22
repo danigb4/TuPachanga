@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+        content="Tu Pachanga - Encuentra compañeros para practicar tu deporte favorito en tu ciudad o en cualquier lugar de España. Crea o únete a eventos deportivos.">
+  <meta name="keywords"
+        content="deporte, eventos deportivos, compañeros de deporte, fútbol, baloncesto, tenis, pádel, calistenia">
+  <meta name="author" content="Daniel González">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
+  <link rel="stylesheet" th:href="@{/css/generalStyle.css}"/>
+  <link rel="stylesheet" th:href="@{/css/user-profile.css}"/>
+  <link rel="stylesheet" th:href="@{/css/new-match.css}"/>
+  <title>Tu Pachanga Web</title>
+</head>
+<body>
+
+<!-- Cabecera del index con menú y titulo -->
+<header>
+
+  <p><a th:href="@{/user/personalized-index}"><img src="../../../../uploads/logos/logo.png"
+                                                   alt="Logo de la web"></a></p>
+  <nav>
+    <ul>
+      <li><a th:href="@{/user/profile}">Ver mi perfil</a></li>
+      <li><a th:href="@{/user/new-match}">Crear un evento</a></li>
+      <li>
+        <!-- Si se deja como enlace, se gerena peticion GET que no funcionaria para .logout() de Spring Security, tiene que ser POST-->
+        <form th:action="@{/logout}" method="post" style="display:inline;">
+          <button type="submit">Cerrar sesión</button>
+        </form>
+      </li>
+    </ul>
+  </nav>
+
+</header>
+
+<main>
+
+  <!-- Error al crear el evento -->
+  <div th:if="${error}" class="flash-message error">
+    <span th:text="${error}"></span>
+    <button onclick="this.parentElement.style.display='none'">×</button>
+  </div>
+
+  <!-- Evento creado correctamente -->
+  <div th:if="${param.success}" class="flash-message success">
+    <span>¡Evento creado!</span>
+    <button onclick="this.parentElement.style.display='none'">×</button>
+  </div>
+
+  <!-- Formulario para crear evento -->
+  <div class="form-container">
+    <div class="editprofile-containeLong">
+
+      <form th:action="@{/user/match-creation}" th:object="${newMatchDto}" method="post">
+
+        <h3>Crear evento</h3>
+
+        <div class="form-group">
+          <label for="titulo">Título:</label>
+          <input type="text" id="titulo" name="titulo" th:field="*{title}"/>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descripción:</label>
+          <textarea id="description" name="description" th:field="*{description}"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="sport">Deporte:</label>
+          <select id="sport" name="idSport" class="form-control">
+            <option value="" disabled>Selecciona un deporte</option>
+            <option th:each="sport : ${user.sports}"
+                    th:value="${sport.id}"
+                    th:text="${sport.name}"
+                    th:selected="${user.sports.contains(sport)}"></option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="municipality">Municipio:</label>
+          <select id="municipality" name="municipality" class="form-control">
+            <option value="" disabled>Selecciona un municipio</option>
+            <option th:each="mun : ${user.municipalities}"
+                    th:value="${mun.id}"
+                    th:text="${mun.name}"></option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sportFacility">Instalación deportiva:</label>
+          <select id="sportFacility" name="idSportFacility" class="form-control" required>
+            <option value="" disabled selected>Selecciona un municipio primero</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="eventDate">Fecha del evento:</label>
+          <input type="datetime-local" id="eventDate" name="eventDate" th:field="*{eventDate}"/>
+        </div>
+
+        <div class="form-group">
+          <label for="endDate">Fecha de finalización:</label>
+          <input type="datetime-local" id="endDate" name="endDate" th:field="*{endDate}"/>
+        </div>
+
+        <div class="form-group">
+          <label for="price">Precio por persona:</label>
+          <input type="number" id="price" name="price" th:field="*{pricePerPerson}" min="0" step="0.05"/>
+        </div>
+
+        <div class="form-group">
+          <label for="maxParticipants">Máximo de participantes:</label>
+          <input type="number" id="maxParticipants" name="maxParticipants" th:field="*{maxParticipants}" min="0"/>
+        </div>
+
+        <div class="form-group">
+          <label>Dificultad:</label>
+          <div class="radio-group" th:each="skill : ${skillLevel}">
+            <input type="radio"
+                   th:field="*{skillLevel}"
+                   th:value="${skill}"/>
+            <label th:for="${#ids.prev('skillLevel')}" th:text="${skill}"></label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn">Crear</button>
+
+      </form>
+
+    </div>
+  </div>
+
+</main>
+
+<!-- Sección de contacto y redes sociales | Pie de página-->
+<footer>
+
+  <div id="copy">
+    <p>&copy; 2023 Tu Pachanga. Todos los derechos reservados.</p>
+    <p>Desarrollado por Daniel González - Desarrollador Web</p>
+    <ul>
+      <li><a href="#">Política de privacidad</a></li>
+      <li><a href="#">Términos y condiciones</a></li>
+    </ul>
+  </div>
+
+  <div id="social-media">
+    <p>Redes sociales:</p>
+    <ul>
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">Twitter</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+  </div>
+
+  <div id="contact">
+    <p>Contacto:</p>
+    <ul>
+      <li>Telefóno: <a href="#">+34 608 708 123</a></li>
+      <li>Email: <a href="#">dani.desarrolloweb@gmail.com</a></li>
+    </ul>
+  </div>
+
+</footer>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const municipalitySelect = document.getElementById('municipality');
+    const sportFacilitySelect = document.getElementById('sportFacility');
+
+    municipalitySelect.addEventListener('change', function() {
+      const municipalityId = this.value;
+
+      if (!municipalityId) {
+        sportFacilitySelect.innerHTML = '<option value="" disabled>Selecciona una instalación</option>';
+        return;
+      }
+
+      // Limpiar el select de instalaciones
+      sportFacilitySelect.innerHTML = '<option value="" disabled selected>Cargando...</option>';
+
+      // Hacer la petición AJAX
+      fetch(`/user/sport-facilities/by-municipality?idMunicipality=${municipalityId}`)
+      .then(response => response.json())
+      .then(data => {
+        sportFacilitySelect.innerHTML = '<option value="" disabled>Selecciona una instalación</option>';
+
+        data.forEach(facility => {
+          const option = document.createElement('option');
+          option.value = facility.id;
+          option.textContent = facility.name; // Asegúrate de que SportFacilityDto tenga un campo "name"
+          sportFacilitySelect.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        sportFacilitySelect.innerHTML = '<option value="" disabled>Error al cargar instalaciones</option>';
+      });
+    });
+  });
+</script>
+
+</body>
+
+</html>

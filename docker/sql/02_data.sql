@@ -67,12 +67,12 @@ INSERT INTO facility_pictures (filename, facility_id, alt) VALUES
 -- 7. Insertar eventos/partidos
 INSERT INTO matches (title, description, sport_id, facility_id, owner_id, event_date, end_date, price_per_person, max_participants, skill_level) VALUES
 -- Eventos en Jaén
-('Torneo de Pádel', 'Torneo amistoso de pádel nivel intermedio', 4, 1, 1, '2023-12-15 17:00:00', '2023-12-15 21:00:00', 10.00, 16, 'INTERMEDIO'),
-('Fútbol 7 Semanal', 'Partido semanal de fútbol 7', 1, 2, 2, '2023-12-10 11:00:00', '2023-12-10 13:00:00', 5.00, 14, 'PRINCIPIANTE'),
-('Clínica de Tenis', 'Sesión de entrenamiento con monitor', 3, 3, 3, '2023-12-12 18:00:00', '2023-12-12 20:00:00', 15.00, 8, 'PRINCIPIANTE'),
+('Torneo de Pádel', 'Torneo amistoso de pádel nivel intermedio', 4, 1, 1, '2025-12-15 17:00:00', '2025-12-15 21:00:00', 10.00, 16, 'INTERMEDIO'),
+('Fútbol 7 Semanal', 'Partido semanal de fútbol 7', 1, 2, 2, '2025-12-10 11:00:00', '2025-12-10 13:00:00', 5.00, 14, 'PRINCIPIANTE'),
+('Clínica de Tenis', 'Sesión de entrenamiento con monitor', 3, 3, 3, '2025-12-12 18:00:00', '2025-12-12 20:00:00', 15.00, 8, 'PRINCIPIANTE'),
 -- Eventos en otras provincias
-('Baloncesto 3x3', 'Torneo rápido de baloncesto', 2, 5, 4, '2023-12-16 12:00:00', '2023-12-16 16:00:00', 3.50, 12, 'EXPERTO'),
-('Partido Voleibol', 'Partido amistoso de voleibol', 5, 6, 5, '2023-12-17 10:00:00', '2023-12-17 12:00:00', 0.00, 12, 'PRINCIPIANTE');
+('Baloncesto 3x3', 'Torneo rápido de baloncesto', 2, 5, 4, '2025-12-16 12:00:00', '2025-12-16 16:00:00', 3.50, 12, 'EXPERTO'),
+('Partido Voleibol', 'Partido amistoso de voleibol', 5, 6, 5, '2025-12-17 10:00:00', '2025-12-17 12:00:00', 0.00, 12, 'PRINCIPIANTE');
 
 -- 8. Asociar usuarios a municipios de interés
 INSERT INTO user_municipalities (user_id, municipality_id) VALUES

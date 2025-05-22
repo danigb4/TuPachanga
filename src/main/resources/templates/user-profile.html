@@ -24,6 +24,7 @@
   <nav>
     <ul>
       <li><a th:href="@{/user/profile}">Ver mi perfil</a></li>
+      <li><a th:href="@{/user/new-match}">Crear un evento</a></li>
       <li>
         <!-- Si se deja como enlace, se gerena peticion GET que no funcionaria para .logout() de Spring Security, tiene que ser POST-->
         <form th:action="@{/logout}" method="post" style="display:inline;">

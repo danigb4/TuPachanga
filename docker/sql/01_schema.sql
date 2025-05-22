@@ -75,7 +75,6 @@ CREATE TABLE matches (
                          price_per_person NUMERIC(6,2) DEFAULT 0,
                          max_participants INT,
                          skill_level VARCHAR(20) CHECK (skill_level IN ('PRINCIPIANTE', 'INTERMEDIO', 'EXPERTO')),
-                         resolved BOOLEAN DEFAULT FALSE,
                          visible BOOLEAN DEFAULT TRUE,
                          created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
                          updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

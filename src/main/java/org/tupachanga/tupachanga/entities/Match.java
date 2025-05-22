@@ -11,12 +11,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.tupachanga.tupachanga.entities.enums.SkillLevel;
 
 import java.math.BigDecimal;
@@ -43,9 +46,11 @@ public class Match {
   private String description;
 
   @Column(name = "event_date", nullable = false)
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   private LocalDateTime eventDate;
 
   @Column(name = "end_date")
+  @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
   private LocalDateTime endDate;
 
   @Column(name = "price_per_person", precision = 6, scale = 2)
@@ -57,9 +62,6 @@ public class Match {
   @Column(name = "skill_level", length = 20)
   @Enumerated(EnumType.STRING)
   private SkillLevel skillLevel;
-
-  @Column(nullable = false)
-  private Boolean resolved = false;
 
   @Column(nullable = false)
   private Boolean visible = true;
@@ -89,5 +91,16 @@ public class Match {
   @Transient
   public int getAvailableParticipants() {
     return maxParticipants - participants.size();
+  }
+
+  @PrePersist
+  protected void onCreate() {
+    this.createdAt = LocalDateTime.now();
+    this.updatedAt = LocalDateTime.now();
+  }
+
+  @PreUpdate
+  protected void onUpdate() {
+    this.updatedAt = LocalDateTime.now();
   }
 }

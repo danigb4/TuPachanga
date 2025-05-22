@@ -1,0 +1,33 @@
+.radio-group {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.radio-group input[type="radio"] {
+  accent-color: #007BFF;
+  margin-right: 0.3rem;
+  width: 1.1em;
+  height: 1.1em;
+}
+
+.radio-group label {
+  margin-right: 1.2rem;
+  font-weight: normal;
+  color: #333;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .radio-group {
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .radio-group label {
+    font-size: 0.95rem;
+    margin-right: 0.7rem;
+  }
+}

@@ -41,7 +41,7 @@
       </div>
 
       <button type="submit" class="btn">Iniciar Sesión</button>
-      <p class="register-link">¿No tienes cuenta? <a th:href="@{/register}">Regístrate aquí</a></p>
+      <p class="register-link">¿No tienes cuenta? <a th:href="@{/auth/register}">Regístrate aquí</a></p>
     </form>
 
     <div th:if="${loginError}" style="color: red;">

@@ -1,6 +1,7 @@
 package org.tupachanga.tupachanga.controllers;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,20 +12,26 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.tupachanga.tupachanga.dtos.NewMatchDto;
+import org.tupachanga.tupachanga.dtos.SportFacilityDto;
 import org.tupachanga.tupachanga.dtos.UpdateUserProfileDto;
 import org.tupachanga.tupachanga.entities.JoinRequest;
 import org.tupachanga.tupachanga.entities.Match;
 import org.tupachanga.tupachanga.entities.Municipality;
 import org.tupachanga.tupachanga.entities.Sport;
+import org.tupachanga.tupachanga.entities.SportFacility;
 import org.tupachanga.tupachanga.entities.User;
 import org.tupachanga.tupachanga.entities.enums.RequestStatus;
+import org.tupachanga.tupachanga.entities.enums.SkillLevel;
 import org.tupachanga.tupachanga.services.JoinRequestsService;
 import org.tupachanga.tupachanga.services.MatchesService;
 import org.tupachanga.tupachanga.services.MunicipalitiesService;
 import org.tupachanga.tupachanga.services.ProvincesService;
+import org.tupachanga.tupachanga.services.SportFacilityService;
 import org.tupachanga.tupachanga.services.SportsService;
 import org.tupachanga.tupachanga.services.UsersService;
 
@@ -39,6 +46,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+@Slf4j
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -55,6 +63,8 @@ public class UserController {
   private final SportsService sportsService;
 
   private final ProvincesService provincesService;
+
+  private final SportFacilityService sportFacilityService;
 
   @Value("${file.upload-dir}")
   private String uploadPathDir;
@@ -201,7 +211,7 @@ public class UserController {
   @GetMapping("/{uuid}")
   public String getUserProfile(
       @PathVariable UUID uuid,
-      Model model ) {
+      Model model) {
 
     User user = usersService.getByUuid(uuid).orElseThrow(() -> new ResponseStatusException(
         HttpStatus.NOT_FOUND));
@@ -210,4 +220,69 @@ public class UserController {
 
     return "user-profile-uuid";
   }
+
+  @GetMapping("/new-match")
+  public String showCreateMatch(
+      Model model,
+      Principal principal
+  ) {
+
+    Optional<User> user = usersService.getByEmail(principal.getName());
+
+    model.addAttribute("user", user.get());
+    model.addAttribute("newMatchDto", new NewMatchDto());
+    model.addAttribute("skillLevel", SkillLevel.values());
+
+    return "new-match";
+  }
+
+  @GetMapping("/sport-facilities/by-municipality")
+  @ResponseBody
+  public List<SportFacilityDto> getSportFacilitiesByMunicipality(
+      @RequestParam Long idMunicipality
+  ) {
+
+    return sportFacilityService.getDtosByMunicipalityId(idMunicipality);
+  }
+
+  @PostMapping("/match-creation")
+  public String matchCreation(
+      @ModelAttribute NewMatchDto dto,
+      RedirectAttributes redirectAttributes,
+      Principal principal
+  ) {
+
+      try {
+
+        Match match = new Match();
+
+        match.setTitle(dto.getTitle());
+        match.setDescription(dto.getDescription());
+
+        Sport sport = sportsService.getById(dto.getIdSport());
+        match.setSport(sport);
+
+        SportFacility sportFacility = sportFacilityService.getById(dto.getIdSportFacility());
+        match.setFacility(sportFacility);
+
+        match.setEventDate(dto.getEventDate());
+        match.setEndDate(dto.getEndDate());
+        match.setPricePerPerson(dto.getPricePerPerson());
+        match.setMaxParticipants(dto.getMaxParticipants());
+        match.setSkillLevel(dto.getSkillLevel());
+
+        Optional<User> owner = usersService.getByEmail(principal.getName());
+        match.setOwner(owner.get());
+
+        Match savedMatch = matchesService.save(match);
+
+        return "redirect:/user/show-match-created";
+
+      }catch (Exception e) {
+
+        redirectAttributes.addFlashAttribute("error", "Error al crear el evento");
+        return "redirect:/user/new-match";
+      }
+  }
+
 }

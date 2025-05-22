@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface MatchesRepository extends JpaRepository<Match, Long> {
 
-  @Query(value = "select * from matches where visible = true order by random() limit 5", nativeQuery = true)
+  @Query(value = "select m from Match m where m.visible = true and m.endDate >= CURRENT_TIMESTAMP order by random() limit 5")
   List<Match> findActiveMacthes();
 
   @Query(value = "select m from Match m join m.facility f "

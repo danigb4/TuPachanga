@@ -20,4 +20,8 @@ public class SportsService {
   public List<Sport> getSportsByIds(List<Long> sportIds) {
     return sportRepository.findAllById(sportIds);
   }
+
+  public Sport getById(Long id) {
+    return sportRepository.findById(id).orElse(null);
+  }
 }

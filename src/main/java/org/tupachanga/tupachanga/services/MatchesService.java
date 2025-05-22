@@ -26,17 +26,7 @@ public class MatchesService {
     return matchesRepository.findById(id);
   }
 
-// --- SIMULA UN TRIGGER -> AÑADE COMO PARTICIPANTE EN EL EVENTO AL DUEÑO DEL POST ----
-/*public Match createMatch(Match match, Long ownerId) {
-  User owner = userRepository.findById(ownerId)
-      .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
-
-  match.setOwner(owner);
-  match.getParticipants().add(owner); // Aquí se añade al dueño como participante
-
-  match.setCreatedAt(LocalDateTime.now());
-  match.setUpdatedAt(LocalDateTime.now());
-
-  return matchRepository.save(match); // Se guarda todo, incluida la relación
-}*/
+  public Match save(Match match) {
+    return matchesRepository.save(match);
+  }
 }
