@@ -26,7 +26,11 @@ public class MatchesService {
     return matchesRepository.findById(id);
   }
 
-  public Match save(Match match) {
-    return matchesRepository.save(match);
+  public void save(Match match) {
+    matchesRepository.save(match);
+  }
+
+  public List<Match> getByOwnerId(String email){
+    return matchesRepository.findByOwner_Email(email);
   }
 }

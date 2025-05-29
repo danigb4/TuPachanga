@@ -13,6 +13,8 @@
   <link rel="stylesheet" th:href="@{/css/generalStyle.css}"/>
   <link rel="stylesheet" th:href="@{/css/personalized-index.css}"/>
   <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/new-match.css}"/>
+  <link rel="stylesheet" th:href="@{/css/matches-list.css}"/>
   <title>Tu Pachanga Web</title>
 </head>
 <body>
@@ -48,18 +50,14 @@
 
   <!-- Petición enviada correctamente -->
   <div th:if="${param.success}" class="flash-message success">
-    <span>Solicitud enviada correctamente</span>
+    <span>Evento modificado correctamente</span>
     <button onclick="this.parentElement.style.display='none'">×</button>
   </div>
 
-  <!-- Título y descripción de la web -->
-  <h1>Bienvenido <span th:text="${user.firstName}"></span></h1>
-  <p>¿Que deporte te apetece practicar hoy?</p>
-
   <!-- Eventos disponibles en los municipios de interes del usuario -->
   <section id="sports-events">
-    <h2>Echa un vistazo a lo que se va a hacer alrededor tuya</h2>
-    <p>¡Elije el evento que mas te guste y reserva tu plaza ya!</p>
+    <h2>Aquí puedes encontrar la información de todos los partidos que has creado</h2>
+    <p>Si alguno no ha acabado y quieres modificarlo, ¡estas a tiempo!</p>
     <div>
       <div th:each="match : ${matches}" class="event-card">
         <div class="event-header">
@@ -89,36 +87,75 @@
           <p><strong>Plazas disponibles:</strong> <span
               th:text="${match.availableParticipants}"></span> | <strong>Precio por
             persona:</strong> <span th:text="${match.pricePerPerson}"></span></p>
-          <button type="button" th:attr="data-event-id=${match.id}"
-                  th:onclick="'openModal(' + ${match.id} + ')'">
-            Contactar
-          </button>
 
-          <!-- Ventana modal para contactar con la persona -->
-          <div th:id="'contactModal-' + ${match.id}" class="modal" style="display:none;">
+          <!-- si la fecha es anterior a la de finalización, se activa un botón para editar datos -->
+          <div th:if="${#temporals.createNow().isBefore(match.endDate)}">
+            <button type="button" class="edit-btn" th:onclick="'openEditModal(' + ${match.id} + ')'">
+              Editar
+            </button>
+          </div>
+
+          <!-- Ventana modal para editar datos del partido -->
+          <div th:id="'editModal-' + ${match.id}" class="modal" style="display:none;">
             <div class="modal-content">
-              <span class="close" th:onclick="'closeModal(' + ${match.id} + ')'">&times;</span>
-              <h3>Contactar con <span th:text="${match.owner.firstName}"></span></h3>
-              <form th:action="@{/user/contact-owner}" method="post">
-                <input type="hidden" name="matchId" th:value="${match.id}"/>
-                <textarea name="message" placeholder="Hola, he visto tu evento y ..."
-                          required></textarea>
-                <button type="submit">Enviar mensaje</button>
+              <span class="close" th:onclick="'closeModal(\'editModal-' + ${match.id} + '\')'">&times;</span>
+              <h3>Editar Evento</h3>
+              <form th:action="@{/match/update}" method="post" th:object="${matchUpdateDto}">
+                <input type="hidden" name="id" th:value="${match.id}"/>
+
+                <div class="form-group">
+                  <label for="title">Título:</label>
+                  <input type="text" id="title" name="title" th:value="${match.title}" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="description">Descripción:</label>
+                  <textarea id="description" name="description" required th:text="${match.description}"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="eventDate">Fecha del evento:</label>
+                  <input type="datetime-local" id="eventDate" name="eventDate"
+                         th:value="${#temporals.format(match.eventDate, 'yyyy-MM-dd''T''HH:mm')}" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="endDate">Fecha de finalización:</label>
+                  <input type="datetime-local" id="endDate" name="endDate"
+                         th:value="${#temporals.format(match.endDate, 'yyyy-MM-dd''T''HH:mm')}" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="pricePerPerson">Precio por persona:</label>
+                  <input type="number" id="pricePerPerson" name="pricePerPerson"
+                         th:value="${match.pricePerPerson}" min="0" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                  <label for="maxParticipants">Máximo de participantes:</label>
+                  <input type="number" id="maxParticipants" name="maxParticipants" th:value="${match.maxParticipants}" min="0"/>
+                </div>
+
+                <div class="form-group">
+                  <label>Dificultad:</label>
+                  <div class="radio-group" th:each="skill : ${skillLevel}">
+                    <input type="radio"
+                           th:id="${'skillLevel_' + match.id + '_' + skill}"
+                           name="skillLevel"
+                           th:value="${skill}"
+                           th:checked="${skill == match.skillLevel}"/>
+                    <label th:for="${'skillLevel_' + match.id + '_' + skill}" th:text="${skill}"></label>
+                  </div>
+                </div>
+
+                <button type="submit">Guardar Cambios</button>
               </form>
             </div>
+
           </div>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- Mapa de google interactivo con eventos -->
-  <section id="interactive-map">
-    <h2>Mira los eventos cercanos a ti</h2>
-    <iframe
-        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50124.376020343036!2d-3.2238658775467517!3d38.26155886616345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1746112304759!5m2!1ses!2ses"
-        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
   </section>
 
 </main>
@@ -156,21 +193,15 @@
 </body>
 
 <script>
-  function openModal(matchId) {
-    document.getElementById("contactModal-" + matchId).style.display = "block";
+  // Función para abrir el modal de edición
+  function openEditModal(matchId) {
+    document.getElementById("editModal-" + matchId).style.display = "block";
   }
 
-  function closeModal(matchId) {
-    document.getElementById("contactModal-" + matchId).style.display = "none";
+  // Función para cerrar modales
+  function closeModal(modalId) {
+    document.getElementById(modalId).style.display = "none";
   }
-
-  window.onclick = function (event) {
-    document.querySelectorAll(".modal").forEach(function (modal) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    });
-  };
 </script>
 
 </html>
