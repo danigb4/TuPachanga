@@ -41,7 +41,7 @@ public class MatchesService {
   }
 
   @Transactional
-  public Match createMatch(Match match) {
+  public void createMatch(Match match) {
 
     Match savedMatch = matchesRepository.save(match);
 
@@ -81,8 +81,6 @@ public class MatchesService {
     } catch (Exception e) {
       log.error("Error al iniciar notificación: " + e.getMessage());
     }
-
-    return savedMatch;
   }
 
   public void save(Match match) {
