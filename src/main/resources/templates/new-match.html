@@ -185,7 +185,7 @@
       sportFacilitySelect.innerHTML = '<option value="" disabled selected>Cargando...</option>';
 
       // Hacer la petición AJAX
-      fetch(`/user/sport-facilities/by-municipality?idMunicipality=${municipalityId}`)
+      fetch(`/match/sport-facilities/by-municipality?idMunicipality=${municipalityId}`)
       .then(response => response.json())
       .then(data => {
         sportFacilitySelect.innerHTML = '<option value="" disabled>Selecciona una instalación</option>';

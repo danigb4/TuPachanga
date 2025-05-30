@@ -93,13 +93,13 @@ public class MatchController {
       Optional<User> owner = usersService.getByEmail(principal.getName());
       match.setOwner(owner.get());
 
-      matchesService.save(match);
+      matchesService.createMatch(match);
 
-      return "redirect:/match/show-match-created";
+      return "redirect:/match/user-list";
 
     } catch (Exception e) {
 
-      redirectAttributes.addFlashAttribute("error", "Error al crear el evento");
+      redirectAttributes.addFlashAttribute("error", "Error al crear el evento" + e.getMessage());
       return "redirect:/match/new-match";
     }
   }
