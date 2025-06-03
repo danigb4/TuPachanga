@@ -86,4 +86,8 @@ public class MatchesService {
   public void save(Match match) {
     matchesRepository.save(match);
   }
+
+  public void delete(Long id) {
+    matchesRepository.deleteById(id);
+  }
 }

@@ -42,15 +42,15 @@
 
 <main>
 
-  <!-- Petición fallida -->
+  <!-- Operacion fallida -->
   <div th:if="${error}" class="flash-message error">
     <span th:text="${error}"></span>
     <button onclick="this.parentElement.style.display='none'">×</button>
   </div>
 
-  <!-- Petición enviada correctamente -->
-  <div th:if="${param.success}" class="flash-message success">
-    <span>Evento modificado correctamente</span>
+  <!-- Operación exitosa -->
+  <div th:if="${success}" class="flash-message success">
+    <span th:text="${success}"></span>
     <button onclick="this.parentElement.style.display='none'">×</button>
   </div>
 
@@ -92,6 +92,9 @@
           <div th:if="${#temporals.createNow().isBefore(match.endDate)}">
             <button type="button" class="edit-btn" th:onclick="'openEditModal(' + ${match.id} + ')'">
               Editar
+            </button>
+            <button type="button" class="delete-btn" th:onclick="'openDeleteModal(' + ${match.id} + ')'" style="background-color: #ff0000">
+              Eliminar
             </button>
           </div>
 
@@ -151,8 +154,22 @@
                 <button type="submit">Guardar Cambios</button>
               </form>
             </div>
-
           </div>
+
+          <!-- Modal para confirmar eliminación del evento -->
+          <div th:id="'deleteModal-' + ${match.id}" class="modal" style="display:none;">
+            <div class="modal-content">
+              <span class="close" th:onclick="'closeModal(\'deleteModal-' + ${match.id} + '\')'">&times;</span>
+              <h3>¿Estás seguro de que deseas eliminar este evento?</h3>
+              <p>Esta acción no se puede deshacer.</p>
+              <form th:action="@{/match/delete}" method="post">
+                <input type="hidden" name="id" th:value="${match.id}" />
+                <button type="submit" class="confirm-delete" style="background-color: #ff0000">Sí, eliminar</button>
+                <button type="button" class="cancel-delete" th:onclick="'closeModal(\'deleteModal-' + ${match.id} + '\')'">Cancelar</button>
+              </form>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -196,6 +213,11 @@
   // Función para abrir el modal de edición
   function openEditModal(matchId) {
     document.getElementById("editModal-" + matchId).style.display = "block";
+  }
+
+  // Función para abrir el modal de eliminar
+  function openDeleteModal(matchId) {
+    document.getElementById("deleteModal-" + matchId).style.display = "block";
   }
 
   // Función para cerrar modales

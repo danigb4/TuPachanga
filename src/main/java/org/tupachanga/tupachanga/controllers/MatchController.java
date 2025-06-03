@@ -157,8 +157,29 @@ public class MatchController {
 
       matchesService.save(currentMatch);
 
-      redirectAttributes.addFlashAttribute("succes", "Evento actualizado correctamente");
-      return "redirect:/match/user-list?success";
+      redirectAttributes.addFlashAttribute("success", "Evento actualizado correctamente");
+      return "redirect:/match/user-list";
+
+    } catch (Exception e) {
+
+      redirectAttributes.addFlashAttribute("error",
+          "Error al actualizar evento.");
+      return "redirect:/match/user-list";
+    }
+  }
+
+  @PostMapping("/delete")
+  public String delete(
+      @RequestParam Long id,
+      RedirectAttributes redirectAttributes
+  ) {
+
+    try {
+
+      matchesService.delete(id);
+      redirectAttributes.addFlashAttribute("success", "Evento eliminado correctamente");
+
+      return "redirect:/match/user-list";
 
     } catch (Exception e) {
 
