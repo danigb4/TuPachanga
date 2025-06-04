@@ -2,8 +2,10 @@ package org.tupachanga.tupachanga.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.tupachanga.tupachanga.dtos.MatchWithCoordinatesDto;
 import org.tupachanga.tupachanga.entities.Match;
 import org.tupachanga.tupachanga.entities.User;
 import org.tupachanga.tupachanga.repositories.MatchesRepository;
@@ -81,6 +83,10 @@ public class MatchesService {
     } catch (Exception e) {
       log.error("Error al iniciar notificación: " + e.getMessage());
     }
+  }
+
+  public List<MatchWithCoordinatesDto> getMatchesWithCoordinates() {
+    return matchesRepository.findMatchesWithCoordinates(PageRequest.of(0,20));
   }
 
   public void save(Match match) {

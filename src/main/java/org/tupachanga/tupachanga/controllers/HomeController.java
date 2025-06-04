@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.tupachanga.tupachanga.dtos.MatchWithCoordinatesDto;
 import org.tupachanga.tupachanga.entities.Match;
 import org.tupachanga.tupachanga.entities.Sport;
 import org.tupachanga.tupachanga.services.MatchesService;
@@ -27,9 +28,11 @@ public class HomeController {
 
     List<Match> randomMatches = matchesService.getActiveMatches();
     List<Sport> sports = sportsService.getAll();
+    List<MatchWithCoordinatesDto> matchesWithCoords = matchesService.getMatchesWithCoordinates();
 
     model.addAttribute("matches", randomMatches);
     model.addAttribute("sports", sports);
+    model.addAttribute("matchesWithCoordinates", matchesWithCoords);
 
     return "index";
   }
