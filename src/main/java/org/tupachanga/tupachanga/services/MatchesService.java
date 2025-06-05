@@ -89,6 +89,10 @@ public class MatchesService {
     return matchesRepository.findMatchesWithCoordinates(PageRequest.of(0,20));
   }
 
+  public List<MatchWithCoordinatesDto> getMatchesWithCoordinatesByUserMunicipalitiesAndSports(Long id) {
+    return matchesRepository.findMatchesByUserMunicipalitiesAndSportsWithCoords(id, PageRequest.of(0,20));
+  }
+
   public void save(Match match) {
     matchesRepository.save(match);
   }

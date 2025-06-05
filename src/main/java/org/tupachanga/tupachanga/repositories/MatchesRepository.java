@@ -28,6 +28,15 @@ public interface MatchesRepository extends JpaRepository<Match, Long> {
 
   @Query(value = "select new org.tupachanga.tupachanga.dtos.MatchWithCoordinatesDto(m, f.latitude, f.longitude, s.icon, mu.name) from Match m "
                                     + "join m.facility f "
+                                    + "join f.municipality mu "
+                                    + "join mu.users u "
+                                    + "join u.sports us "
+                                    + "join m.sport s "
+                                    + "where u.id = :userId and m.owner.id != :userId and m.sport.id = us.id")
+  List<MatchWithCoordinatesDto> findMatchesByUserMunicipalitiesAndSportsWithCoords(@Param("userId") Long userId, Pageable pageable);
+
+  @Query(value = "select new org.tupachanga.tupachanga.dtos.MatchWithCoordinatesDto(m, f.latitude, f.longitude, s.icon, mu.name) from Match m "
+                                    + "join m.facility f "
                                     + "join m.sport s "
                                     + "join f.municipality mu "
                                     + "where m.visible = true and m.endDate >= CURRENT_TIMESTAMP "

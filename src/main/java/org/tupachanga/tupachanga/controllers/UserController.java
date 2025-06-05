@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.tupachanga.tupachanga.dtos.MatchWithCoordinatesDto;
 import org.tupachanga.tupachanga.dtos.UpdateUserProfileDto;
 import org.tupachanga.tupachanga.entities.JoinRequest;
 import org.tupachanga.tupachanga.entities.Match;
@@ -68,8 +69,13 @@ public class UserController {
 
       List<Match> macthes = matchesService.getMatchesByUserMunicipalitiesAndSports(
           user.get().getId());
+
+      List<MatchWithCoordinatesDto> matchesWithCoords = matchesService.getMatchesWithCoordinatesByUserMunicipalitiesAndSports(user.get()
+          .getId());
+
       model.addAttribute("matches", macthes);
       model.addAttribute("user", user.get());
+      model.addAttribute("matchesWithCoords", matchesWithCoords);
     }
 
     return "personalized-index";

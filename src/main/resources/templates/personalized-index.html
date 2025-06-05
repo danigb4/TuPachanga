@@ -13,6 +13,13 @@
   <link rel="stylesheet" th:href="@{/css/generalStyle.css}"/>
   <link rel="stylesheet" th:href="@{/css/personalized-index.css}"/>
   <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/interactiveMap.css}"/>
+
+  <!-- Hojas de estilos CSS para Leaftlef -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <!-- Cargamos la biblioteca de mapas interactivos desde un CDN (Red de Distribución de Contenidos) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <title>Tu Pachanga Web</title>
 </head>
 <body>
@@ -112,13 +119,10 @@
     </div>
   </section>
 
-  <!-- Mapa de google interactivo con eventos -->
+  <!-- Mapa de google interactivocde Leaflet con eventos -->
   <section id="interactive-map">
-    <h2>Mira los eventos cercanos a ti</h2>
-    <iframe
-        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d50124.376020343036!2d-3.2238658775467517!3d38.26155886616345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1746112304759!5m2!1ses!2ses"
-        width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <h2>Mira los eventos que van a ocurrir cerca de ti</h2>
+    <div id="map"></div>
   </section>
 
 </main>
@@ -153,6 +157,57 @@
   </div>
 
 </footer>
+
+<script th:inline="javascript">
+
+  /*<![CDATA[*/
+  const matches = /*[[${matchesWithCoords}]]*/ [];
+
+  const map = L.map('map').setView([40.4168, -3.7038], 6); // Centramos el mapa en el centro de España
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  matches.forEach(match => {
+    const iconName = match.icon ? match.icon : 'default.png';
+    const iconPath = `/uploads/avatars/sports/${iconName}`;
+
+    const customIcon = L.icon({
+      iconUrl: iconPath,
+      iconSize: [40, 40],
+      iconAnchor: [20, 40],
+      popupAnchor: [0, -40],
+      className: '' // Elimina texto bajo el icono
+    });
+
+    const marker = L.marker([match.latitude, match.longitude], {
+      icon: customIcon,
+      title: '' // Sin texto al pasar el cursor
+    });
+
+    marker.bindPopup(`
+      <strong>${match.title}</strong><br/>
+      ${new Date(match.eventDate).toLocaleString()}<br/>
+      <em>${match.municipalityName}</em>
+    `);
+
+    marker.addTo(map);
+
+    // Abrir popup al pasar el ratón por encima
+    marker.on('mouseover', function () {
+      this.openPopup();
+    });
+
+    // Cerrar popup al quitar el ratón
+    marker.on('mouseout', function () {
+      this.closePopup();
+    });
+
+  });
+  /*]]>*/
+</script>
+
 </body>
 
 <script>
