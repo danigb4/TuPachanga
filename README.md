@@ -87,6 +87,11 @@ El proyecto sigue el patrón MVC (Modelo-Vista-Controlador). Estructura de paque
 
 ---
 
+## 🛠️ Entidades (Modelo E/R)
+
+![TuPachangaApp](assets/modeloER.gif)
+---
+
 ## 👤 Autor
 
 **Daniel González Blázquez** – [@danigb4](https://github.com/danigb4)
