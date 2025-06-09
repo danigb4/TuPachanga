@@ -73,7 +73,7 @@ El proyecto sigue el patrón MVC (Modelo-Vista-Controlador). Estructura de paque
 | POST   | `/user/update-profile`     | Actualiza perfil del usuario logueado                 
 | GET    | `/user/{uuid}`             | Muestra perfil del creador del evento                 
 | GET    | `/match/new-match`         | Crear nuevo evento                                    |
-| GET    | `/match/match-creation`    | Registro del nuevo evento                             |
+| POST    | `/match/match-creation`    | Registro del nuevo evento                             |
 | GET    | `/match/user-list`         | Ver eventos del usuario                               |
 | POST   | `/match/update`            | Modificar evento                                      |
 | POST   | `/match/delete`            | Eliminar evento                                       |
