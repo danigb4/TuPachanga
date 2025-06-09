@@ -139,7 +139,22 @@ textarea {
   text-decoration: underline;
 }
 
-/* Responsive Design */
+.form-group .error {
+  color: #d8000c;
+  background-color: #ffd2d2;
+  border: 1px solid #d8000c;
+  border-radius: 5px;
+  padding: 0.4rem 0.7rem;
+  margin-top: 0.4rem;
+  font-size: 0.97rem;
+  font-weight: 500;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+  transition: background 0.2s, border 0.2s;
+}
+
 @media (max-width: 768px) {
   .register-container {
     padding: 1.5rem;
@@ -160,5 +175,10 @@ textarea {
 
   .login-link {
     font-size: 0.8rem;
+  }
+
+  .form-group .error {
+    font-size: 0.9rem;
+    padding: 0.3rem 0.5rem;
   }
 }

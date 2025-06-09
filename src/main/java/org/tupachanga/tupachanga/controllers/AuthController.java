@@ -1,10 +1,13 @@
 package org.tupachanga.tupachanga.controllers;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,8 +80,21 @@ public class AuthController {
 
   @PostMapping("/register")
   public String processRegister(
-      @ModelAttribute NewUserDto dto,
-      @RequestParam("avatarFile") MultipartFile avatarFile) {
+      @Valid @ModelAttribute("newUserDto") NewUserDto dto,
+      BindingResult result,
+      @RequestParam("avatarFile") MultipartFile avatarFile,
+      Model model) {
+
+    if (result.hasErrors()) {
+
+      List<Province> provinces = provincesService.getAll();
+      List<Sport> sports = sportsService.getAll();
+
+      model.addAttribute("provinces", provinces);
+      model.addAttribute("sports", sports);
+
+      return "register";
+    }
 
     try {
 

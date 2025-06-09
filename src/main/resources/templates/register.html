@@ -28,25 +28,32 @@
 
 <div class="register-container">
   <h1>Regístrate</h1>
-  <form action="#" th:action="@{/auth/register}" th:object="${newUserDto}" method="POST"
+  <form th:action="@{/auth/register}" th:object="${newUserDto}" method="POST"
         enctype="multipart/form-data">
     <div class="form-group">
-      <input type="text" th:field="*{firstName}" placeholder="Nombre" required/>
+      <input type="text" th:field="*{firstName}" placeholder="Nombre"/>
+      <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></div>
     </div>
     <div class="form-group">
-      <input type="text" th:field="*{lastName}" placeholder="Apellido" required/>
+      <input type="text" th:field="*{lastName}" placeholder="Apellido"/>
+      <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></div>
+
     </div>
     <div class="form-group">
-      <input type="email" th:field="*{email}" placeholder="Correo electrónico" required/>
+      <input type="email" th:field="*{email}" placeholder="Correo electrónico"/>
+      <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
     </div>
     <div class="form-group">
       <input type="text" th:field="*{telephone}" placeholder="Teléfono"/>
+      <div th:if="${#fields.hasErrors('telephone')}" th:errors="*{telephone}" class="error"></div>
     </div>
     <div class="form-group">
-      <input type="password" th:field="*{password}" placeholder="Contraseña" required/>
+      <input type="password" th:field="*{password}" placeholder="Contraseña"/>
+      <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
     </div>
     <div class="form-group">
       <textarea th:field="*{description}" placeholder="Sobre ti..."></textarea>
+      <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="error"></div>
     </div>
     <div class="form-group">
       <input type="file" name="avatarFile" accept="image/*"/>
@@ -67,6 +74,7 @@
       <select id="municipalitySelect" th:field="*{municipalities}" class="form-control" multiple disabled>
         <option value="" disabled selected>Primero selecciona una provincia</option>
       </select>
+      <div th:if="${#fields.hasErrors('municipalities')}" th:errors="*{municipalities}" class="error"></div>
     </div>
 
     <div class="form-group">
@@ -77,6 +85,9 @@
                 th:value="${sport.id}"
                 th:text="${sport.name}"></option>
       </select>
+      <div th:if="${#fields.hasErrors('sports')}"
+           th:errors="*{sports}"
+           class="error"></div>
     </div>
 
     <button type="submit" class="btn">Registrarse</button>

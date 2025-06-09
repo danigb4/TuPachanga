@@ -1,8 +1,6 @@
 package org.tupachanga.tupachanga.entities;
 
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -14,14 +12,12 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.tupachanga.tupachanga.entities.enums.Role;
-import org.tupachanga.tupachanga.entities.enums.SkillLevel;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
