@@ -28,7 +28,7 @@ Capturas de pantallas de algunas funcionalidades de la aplicación.
 - **Backend:** Java 21, Spring Boot, Spring Security, Spring Data JPA
 - **Frontend:** Thymeleaf, HTML5, CSS3, JavaScript, Leaflet.js
 - **Base de datos:** PostgreSQL
-- **Otros:** Maven, BCrypt, Bootstrap, Docker
+- **Otros:** Maven, BCrypt, Docker
 
 ---
 
