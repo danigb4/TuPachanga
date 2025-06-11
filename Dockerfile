@@ -8,7 +8,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Construye el proyecto y genera el jar (sin tests para acelerar)
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -X
 
 # Etapa 2: imagen final con JRE
 FROM eclipse-temurin:17-jdk-jammy
