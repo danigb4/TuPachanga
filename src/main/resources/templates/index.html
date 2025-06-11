@@ -26,20 +26,16 @@
 <body>
 
 <!-- Cabecera del index con menú y titulo -->
+<!-- Cabecera del index con menú y titulo -->
 <header>
-  <div class="header-container">
-    <p class="logo"><a th:href="@{/}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
 
-    <input type="checkbox" id="menu-toggle" class="menu-toggle">
-    <label for="menu-toggle" class="hamburger">☰</label>
-
-    <nav class="main-nav">
-      <ul class="nav-list">
-        <li><a th:href="@{/auth/login}">Iniciar sesión</a></li>
-        <li><a th:href="@{/auth/register}">Registrarse</a></li>
-      </ul>
-    </nav>
-  </div>
+  <p><a th:href="@{/}"><img src="../../../../uploads/logos/logo.png" alt="Logo de la web"></a></p>
+  <nav>
+    <ul>
+      <li><a th:href="@{/auth/login}">Iniciar sesión</a></li>
+      <li><a th:href="@{/auth/register}">Registrarse</a></li>
+    </ul>
+  </nav>
 </header>
 
 <main>
