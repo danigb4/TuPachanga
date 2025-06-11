@@ -1,0 +1,118 @@
+.request-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.request-card {
+  background: #fff;
+  border: 1.5px solid #e3e8ee;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0, 123, 255, 0.06);
+  padding: 1.5rem 1.2rem;
+  min-width: 260px;
+  max-width: 340px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.16s, box-shadow 0.16s;
+  position: relative;
+  overflow: hidden;
+}
+
+.request-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  background: linear-gradient(90deg, #007bff 0%, #43e97b 100%);
+  border-radius: 14px 14px 0 0;
+  z-index: 1;
+}
+
+.request-card .sender p {
+  margin: 0.3rem 0;
+  color: #1a237e;
+  font-size: 1.05rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  z-index: 2;
+  position: relative;
+}
+
+.request-card .actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.1rem;
+  justify-content: center;
+  z-index: 2;
+  position: relative;
+}
+
+.request-card .actions button {
+  padding: 0.48rem 1.1rem;
+  border: none;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #f5f6fa;
+  color: #007bff;
+  border: 1px solid #dbeafe;
+  transition: background 0.15s, color 0.15s, border 0.15s, transform 0.15s;
+  outline: none;
+}
+
+.request-card .actions .accept {
+  background: #e8f5e9;
+  color: #219150;
+  border: 1px solid #b2dfdb;
+}
+
+.request-card .actions .accept:hover {
+  background: #c8e6c9;
+  color: #17643a;
+  border: 1px solid #81c784;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.request-card .actions .reject {
+  background: #ffebee;
+  color: #d32f2f;
+  border: 1px solid #ffcdd2;
+}
+
+.request-card .actions .reject:hover {
+  background: #ffcdd2;
+  color: #b71c1c;
+  border: 1px solid #e57373;
+  transform: translateY(-2px) scale(1.04);
+}
+
+.request-card:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.10);
+}
+
+@media (max-width: 700px) {
+  .request-wrapper {
+    gap: 1rem;
+  }
+  .request-card {
+    min-width: 90vw;
+    max-width: 98vw;
+    padding: 1rem 0.5rem;
+  }
+  .request-card .sender p {
+    font-size: 0.98rem;
+  }
+  .request-card .actions button {
+    font-size: 0.97rem;
+    padding: 0.4rem 0.8rem;
+  }
+}

@@ -11,10 +11,18 @@
   <meta name="robots" content="index, follow">
   <link rel="icon" href="../../../../uploads/logos/favicon-256x256.png" type="image/x-icon">
   <link rel="stylesheet" th:href="@{/css/generalStyle.css}"/>
-  <link rel="stylesheet" th:href="@{/css/user-profile.css}"/>
+  <link rel="stylesheet" th:href="@{/css/personalized-index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/index.css}"/>
+  <link rel="stylesheet" th:href="@{/css/request.css}"/>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Hojas de estilos CSS para Leaftlef -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <!-- Cargamos la biblioteca de mapas interactivos desde un CDN (Red de Distribución de Contenidos) -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <title>Tu Pachanga Web</title>
 </head>
 <body>
@@ -24,6 +32,7 @@
 
   <p><a th:href="@{/user/personalized-index}"><img src="../../../../uploads/logos/logo.png"
                                                    alt="Logo de la web"></a></p>
+
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -35,6 +44,7 @@
           <a class="nav-link" th:href="@{/user/profile}">Ver mi perfil</a>
           <a class="nav-link" th:href="@{/match/new-match}">Crear un evento</a>
           <a class="nav-link" th:href="@{/match/user-list}">Ver mis eventos</a>
+          <a class="nav-link" th:href="@{/user/request}">Solicitudes</a>
           <a class="nav-link">
             <!-- Si se deja como enlace, se gerena peticion GET que no funcionaria para .logout() de Spring Security, tiene que ser POST-->
             <form th:action="@{/logout}" method="post" style="display:inline;">
@@ -49,49 +59,42 @@
 
 <main>
 
-  <!-- Imagen de perfil y datos del usuario -->
-  <div class="user-container">
-    <div class="user-avatar">
-      <img th:src="@{'/uploads/avatars/users/' + ${user.avatar}}" alt="Avatar de usuario"/>
-    </div>
-    <div class="user-data">
-      <h2 th:text="${user.firstName} + ' ' + ${user.lastName}"></h2>
-      <p th:text="${user.email}"></p>
-      <p th:text="'Miembro desde: ' + ${#temporals.format(user.createdAt, 'dd/MM/yyyy')}"></p>
-    </div>
+  <!-- Petición fallida -->
+  <div th:if="${error}" class="flash-message error">
+    <span th:text="${error}"></span>
+    <button onclick="this.parentElement.style.display='none'">×</button>
   </div>
 
-  <!-- Descripción -->
-  <section>
-    <h3>Descripción</h3>
-    <p th:text="${user.description}"></p>
-  </section>
+  <!-- Petición enviada correctamente -->
+  <div th:if="${success}" class="flash-message success">
+    <span th:text="${success}"></span>
+    <button onclick="this.parentElement.style.display='none'">×</button>
+  </div>
 
-  <!-- Municipios del usuario -->
+  <!-- Título y descripción de la web -->
+  <h1>Solicitudes de participación a tus eventos</span></h1>
+  <p>En este apartado puedes ver las solicitudes de otros usuario que quieren unirse a tus eventos</p>
+
+  <!-- Solicitudes de otros usuarios -->
   <section>
-    <h3>Municipios donde quieres ver anuncios:</h3>
-    <div class="municipalities-wrapper">
-      <div th:each="municipality : ${user.municipalities}">
-        <div class="municipality-icon">
-          <img src="/uploads/logos/municipality-logo.png" alt="Municipio icono"/>
-        </div>
-        <div class="municipality-name">
-          <span th:text="${municipality.name}"></span>
-        </div>
-      </div>
+    <div th:if="${joinRequest.isEmpty()}">
+      <p>¡Vaya, parece que no tienes solicitudes pendientes!</p>
     </div>
-  </section>
-
-  <!-- Deportes que le gustan -->
-  <section>
-    <h3>Selección de deportes que te gustan</h3>
-    <div class="sports-wrapper">
-      <div th:each="sport : ${user.sports}" class="sport-card">
-        <div class="sport-icon">
-          <img th:src="@{'/uploads/avatars/sports/' + ${sport.icon}}" th:alt="${sport.alt}"/>
+    <div class="request-wrapper" th:if="${!joinRequest.isEmpty()}">
+      <div th:each="jr : ${joinRequest}" class="request-card">
+        <div class="sender">
+          <p>De: <a th:href="@{/user/{uuid}(uuid = ${jr.sender.uuid})}"><span
+              th:text="${jr.sender.firstName} + ' ' + ${jr.sender.lastName}"></span></a></p>
+          <p>Evento: <span th:text="${jr.match.title}"></span></p>
+          <p>Mensaje: <span th:text="${jr.message}"></span></p>
         </div>
-        <div class="sport-name">
-          <span th:text="${sport.name}"></span>
+        <div class="actions">
+          <form method="post" th:action="@{'/request/accept/' + ${jr.id}}">
+            <button type="submit" class="accept">Aceptar</button>
+          </form>
+          <form method="post" th:action="@{'/request/reject/' + ${jr.id}}">
+            <button type="submit" class="reject">Rechazar</button>
+          </form>
         </div>
       </div>
     </div>
@@ -129,6 +132,7 @@
   </div>
 
 </footer>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

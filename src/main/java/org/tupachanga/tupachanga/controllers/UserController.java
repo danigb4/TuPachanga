@@ -112,6 +112,7 @@ public class UserController {
     JoinRequest newJoinRequest = new JoinRequest();
     newJoinRequest.setMatch(match);
     newJoinRequest.setSender(sender);
+    newJoinRequest.setReciever(match.getOwner());
     newJoinRequest.setMessage(message);
     newJoinRequest.setStatus(RequestStatus.PENDING);
 
@@ -215,5 +216,16 @@ public class UserController {
     model.addAttribute("user", user);
 
     return "user-profile-uuid";
+  }
+
+  @GetMapping("/request")
+  public String showRequest(
+      Principal principal,
+      Model model
+  ) {
+
+    model.addAttribute("joinRequest", joinRequestsService.getAllByEmail(principal.getName()));
+
+    return "show-joinRequest";
   }
 }

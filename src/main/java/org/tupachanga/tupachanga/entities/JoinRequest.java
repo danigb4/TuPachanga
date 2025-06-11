@@ -44,6 +44,9 @@ public class JoinRequest {
   @ManyToOne
   private User sender;
 
+  @ManyToOne
+  private User reciever;
+
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();

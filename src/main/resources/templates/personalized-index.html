@@ -44,6 +44,7 @@
           <a class="nav-link" th:href="@{/user/profile}">Ver mi perfil</a>
           <a class="nav-link" th:href="@{/match/new-match}">Crear un evento</a>
           <a class="nav-link" th:href="@{/match/user-list}">Ver mis eventos</a>
+          <a class="nav-link" th:href="@{/user/request}">Solicitudes</a>
           <a class="nav-link">
             <!-- Si se deja como enlace, se gerena peticion GET que no funcionaria para .logout() de Spring Security, tiene que ser POST-->
             <form th:action="@{/logout}" method="post" style="display:inline;">
@@ -224,21 +225,27 @@
 </body>
 
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".modal").forEach(modal => {
+      // Solo cerrar si se hace clic directamente en el fondo (overlay)
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    });
+  });
+
   function openModal(matchId) {
-    document.getElementById("contactModal-" + matchId).style.display = "block";
+    const modal = document.getElementById("contactModal-" + matchId);
+    if (modal) modal.style.display = "block";
   }
 
   function closeModal(matchId) {
-    document.getElementById("contactModal-" + matchId).style.display = "none";
+    const modal = document.getElementById("contactModal-" + matchId);
+    if (modal) modal.style.display = "none";
   }
-
-  window.onclick = function (event) {
-    document.querySelectorAll(".modal").forEach(function (modal) {
-      if (event.target === modal) {
-        modal.style.display = "none";
-      }
-    });
-  };
 </script>
+
 
 </html>

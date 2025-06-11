@@ -88,7 +88,8 @@ CREATE TABLE join_requests (
                                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
                                status VARCHAR(20) CHECK (status IN ('PENDING', 'ACCEPTED', 'REJECTED')),
                                match_id INT REFERENCES matches(id),
-                               sender_id INT REFERENCES users(id)
+                               sender_id INT REFERENCES users(id),
+                               reciever_id INT REFERENCES users(id)
 );
 
 -- Tabla intermedia: municipios de interés para usuarios
