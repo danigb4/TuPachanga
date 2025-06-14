@@ -25,6 +25,7 @@
 
   <p><a th:href="@{/user/personalized-index}"><img src="../../../../uploads/logos/logo.png"
                                                    alt="Logo de la web"></a></p>
+
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -36,6 +37,7 @@
           <a class="nav-link" th:href="@{/user/profile}">Ver mi perfil</a>
           <a class="nav-link" th:href="@{/match/new-match}">Crear un evento</a>
           <a class="nav-link" th:href="@{/match/user-list}">Ver mis eventos</a>
+          <a class="nav-link" th:href="@{/user/request}">Solicitudes</a>
           <a class="nav-link">
             <!-- Si se deja como enlace, se gerena peticion GET que no funcionaria para .logout() de Spring Security, tiene que ser POST-->
             <form th:action="@{/logout}" method="post" style="display:inline;">
